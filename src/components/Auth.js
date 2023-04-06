@@ -5,12 +5,10 @@ import { async } from '@firebase/util'
 
 
 export default function Auth(){
-    const navigate = useNavigate()
 
     const signIn = async () => {
         try{
             await signInWithPopup(auth, googleProvider)
-            navigate('/')
         }catch(error){
             console.log('Error')
         }
