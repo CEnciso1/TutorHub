@@ -1,0 +1,11 @@
+.tutor-search-form{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}
+.welcome-header{
+    background-color: #e87400dc;
+    border-radius: 8px;
+    padding: 50px;
+    margin-bottom: 30px;
+}
