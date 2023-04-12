@@ -1,37 +1,39 @@
 import React,{ useEffect, useState, Component } from "react"
-import axios from 'axios'
 import '../css/Styles.css'
-import {db} from '../database-config/firebase'
-import {getDoc} from 'firebase/firestore'
-export default function Home(){
+import { useAuth } from "../context/AuthContext"
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../database-config/firebase";
 
-    const [username,setUsername] = useState('')
+export default function Home(){
+    const {currentUser} = useAuth()
     const [email,setEmail] = useState('')
-    const [userInfo, setUserInfo] = useState('')
+    
+    useEffect(() => {
+        (async () => {
+            const docRef = doc(db, "students", currentUser.uid)
+            try{
+                const userDoc = await getDoc(docRef)
+                const data = userDoc.data()
+                console.log(data)
+                console.log(currentUser.uid)
+            }catch(error){
+                console.log(error)
+            }
+        })()
+        }, []
+    )   
+
 
     const handleSubmit = event => {
         event.preventDefault()
-        console.log(username, email)
     }
 
-    useEffect(() => {
-        try{
-            const getUserInfo = async () => {
-
-            }
-        } catch(error){
-            console.log('Error')
-        }
-    }, [])
-
-
     return (
-        <div class='root'>
             <div class='container'>
                 <div class='welcome-header'>
-                    <h1>Hello Chris, welcome to TutorHub</h1>
+                    <h1>Hello {}, welcome to TutorHub</h1>
                     <p>Search for a tutor that best matches your learning needs</p>
-                    <form class='tutor-search-form'action='/login' method="POST">
+                    <form class='tutor-search-form'action='/' method="POST">
                         <input id='name' class="form-control" placeholder="Name" name='name' type='text' onChange={(e) => setEmail(e.target.value)}/>
                         <br/>
                         <input id='major' class="form-control" placeholder="Major" name='major' type='major' onChange={(e) => setEmail(e.target.value)}/>
@@ -41,10 +43,9 @@ export default function Home(){
                 </div>
                 <div class='student-content'>
                     <h1>Your favorite tutors</h1>
-
+                    <div></div>
 
                 </div>
             </div>
-        </div>
         )
 }

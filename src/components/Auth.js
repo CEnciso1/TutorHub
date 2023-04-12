@@ -1,7 +1,5 @@
 import {auth, googleProvider} from '../database-config/firebase'
 import {signInWithPopup} from 'firebase/auth'
-import {useState, useNavigate} from 'react'
-import { async } from '@firebase/util'
 
 
 export default function Auth(){
@@ -16,7 +14,7 @@ export default function Auth(){
 
     return(
         <div>
-            <button class="btn btn-primary" onClick={signIn}>Sign in with Google</button>
+            <button class="btn btn-primary btn-lg" onClick={signIn}>Sign in with Google</button>
         </div>
     )
 }
