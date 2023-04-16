@@ -23,6 +23,12 @@
     flex-direction: row;
 }
 #logout-button{
-    margin-right: 10px;
+    margin-right: 20px;
     align-self: flex-start;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }

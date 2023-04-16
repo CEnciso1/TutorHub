@@ -4,7 +4,8 @@ import {BrowserRouter, Route, Routes, } from "react-router-dom"
 import {Navbar, Container, Nav, Button, } from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import Login from './Login'
-import Home from './Home'
+import StudentFeed from './StudentFeed'
+import TutorFeed from './TutorFeed'
 import SignUp from './Signup'
 import Logout from './Logout'
 
@@ -21,8 +22,11 @@ function App() {
               <Navbar.Toggle />
               <Navbar.Collapse>
                 <Nav>
-                    <LinkContainer to='/feed'>
-                      <Nav.Link>Home</Nav.Link>
+                    <LinkContainer to='/tutorfeed'>
+                      <Nav.Link>Tutor Feed</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to='/studentfeed'>
+                      <Nav.Link>Student Feed</Nav.Link>
                     </LinkContainer>
                   <LinkContainer to='/'>
                     <Nav.Link>Login</Nav.Link>
@@ -36,7 +40,8 @@ function App() {
             <Logout/>
           </Navbar>
             <Routes>
-                <Route element={<Home />} path="/feed" exact />
+                <Route element={<StudentFeed />} path="/tutorfeed" exact />
+                <Route element={<TutorFeed />} path="/studentfeed" exact />
                 <Route element={<Login />} path="/" exact/>
                 <Route element={<SignUp />} path="/signup" />
             </Routes>

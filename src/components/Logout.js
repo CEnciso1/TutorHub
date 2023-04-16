@@ -21,7 +21,7 @@ export default function Logout(){
 
 
     return (
-        <div >
+        <div id='logout-button'>
             <button class='btn btn-primary' type='button' onClick={handleLogout}>
                 Logout
             </button>

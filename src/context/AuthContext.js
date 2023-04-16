@@ -21,7 +21,7 @@ export function AuthContextProvider ({children}) {
     };
 
     const createUser1 = async (email, password) => {
-      await createUserWithEmailAndPassword(auth, email, password); 
+      const temp = await createUserWithEmailAndPassword(auth, email, password);
     };
     
     const login = (email, password) =>  {
@@ -36,13 +36,13 @@ export function AuthContextProvider ({children}) {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
           if(user){
             console.log('user')
-            console.log(user)
+            //console.log(user)
             setCurrentUser(user)
             setLoading(false)
           }
           else{
             console.log('no user')
-            console.log(user)
+            // console.log(user)
             setCurrentUser(user)
             setLoading(false)
           } 

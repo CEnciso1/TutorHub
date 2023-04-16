@@ -6,6 +6,7 @@ import { db } from "../database-config/firebase";
 
 export default function Home(){
     const {currentUser} = useAuth()
+    const [userData, setUserData] = useState()
     const [email,setEmail] = useState('')
     
     useEffect(() => {
@@ -14,6 +15,7 @@ export default function Home(){
             try{
                 const userDoc = await getDoc(docRef)
                 const data = userDoc.data()
+                setUserData(data)
                 console.log(data)
                 console.log(currentUser.uid)
             }catch(error){
@@ -31,7 +33,7 @@ export default function Home(){
     return (
             <div class='container'>
                 <div class='welcome-header'>
-                    <h1>Hello {}, welcome to TutorHub</h1>
+                    <h1>Hello {userData && userData.name.first}, welcome to TutorHub</h1>
                     <p>Search for a tutor that best matches your learning needs</p>
                     <form class='tutor-search-form'action='/' method="POST">
                         <input id='name' class="form-control" placeholder="Name" name='name' type='text' onChange={(e) => setEmail(e.target.value)}/>
