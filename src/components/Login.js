@@ -10,6 +10,7 @@ export default function Login(){
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [accountOption, setAccountOption] = useState('tutor')
+    
 
     const handleSubmit = async e => {
         e.preventDefault()
@@ -17,7 +18,7 @@ export default function Login(){
         try{
             await login(email, password)
             console.log('signed in')
-            if(accountOption == 'student')
+            if(accountOption === 'student')
                 navigate('/studentfeed')
             else 
                 navigate('/tutorfeed')

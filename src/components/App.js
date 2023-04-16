@@ -40,8 +40,8 @@ function App() {
             <Logout/>
           </Navbar>
             <Routes>
-                <Route element={<StudentFeed />} path="/tutorfeed" exact />
-                <Route element={<TutorFeed />} path="/studentfeed" exact />
+                <Route element={<StudentFeed />} path="/studentfeed" exact />
+                <Route element={<TutorFeed />} path="/tutorfeed" exact />
                 <Route element={<Login />} path="/" exact/>
                 <Route element={<SignUp />} path="/signup" />
             </Routes>
