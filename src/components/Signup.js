@@ -6,7 +6,7 @@ import { db } from "../database-config/firebase";
 
 export default function SignUp(){
     let navigate = useNavigate()
-    const {createUser, createUser1, currentUser} = useAuth()
+    const {createUser, createUser1, currentUser, assignAccountType} = useAuth()
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [firstName,setFirstName] = useState('')
@@ -16,6 +16,7 @@ export default function SignUp(){
 
     const handleSubmit = async e => {
         e.preventDefault()
+        assignAccountType(accountOption)
         const userCredentials = await createUser(email,password)
         if(accountOption === 'student'){
             await setDoc(doc(db, 'students', userCredentials.user.uid),{

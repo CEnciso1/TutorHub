@@ -8,6 +8,9 @@ import StudentFeed from './StudentFeed'
 import TutorFeed from './TutorFeed'
 import SignUp from './Signup'
 import Logout from './Logout'
+import PrivateRoute from './PrivateRoute'
+import ProtectStudentRoute from './ProtectStudentRoute'
+import ProtectTutorRoute from './ProtectTutorRoute'
 
 function App() {
 
@@ -40,8 +43,14 @@ function App() {
             <Logout/>
           </Navbar>
             <Routes>
-                <Route element={<StudentFeed />} path="/studentfeed" exact />
-                <Route element={<TutorFeed />} path="/tutorfeed" exact />
+                <Route element={<PrivateRoute/>}>
+                  <Route element={<ProtectStudentRoute/>}>
+                    <Route element={<StudentFeed />} path="/studentfeed" exact />
+                  </Route>
+                  <Route element={<ProtectTutorRoute/>}>
+                    <Route element={<TutorFeed />} path="/tutorfeed" exact />
+                  </Route>
+                </Route>
                 <Route element={<Login />} path="/" exact/>
                 <Route element={<SignUp />} path="/signup" />
             </Routes>

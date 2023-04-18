@@ -11,6 +11,11 @@ export function useAuth() {
 export function AuthContextProvider ({children}) {
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(true)
+    const [accountType, setAccountType] = useState('')
+
+    const assignAccountType = (type) => {
+      setAccountType(type)
+    }
 
     const signInWithGoogle = () => {
         return signInWithPopup(auth, googleProvider)
@@ -57,7 +62,9 @@ export function AuthContextProvider ({children}) {
       login,
       createUser,
       createUser1,
-      logout
+      logout,
+      assignAccountType,
+      accountType
     }
 
     return (
