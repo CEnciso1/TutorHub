@@ -6,6 +6,6 @@ export default function ProtectTutorRoute() {
     const {accountType} = useAuth()
 
     return (
-      accountType === 'tutor'  ? <Outlet/> : <Navigate to='/studentfeed'/>
+      accountType === 'tutor'  ? <Outlet/> : <Navigate to='/'/>
     )
 }

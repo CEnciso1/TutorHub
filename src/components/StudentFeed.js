@@ -5,9 +5,10 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../database-config/firebase";
 
 export default function Home(){
-    const {currentUser} = useAuth()
+    const {currentUser,assignAccountType} = useAuth()
     const [userData, setUserData] = useState()
     const [email,setEmail] = useState('')
+    assignAccountType('student')
     
     useEffect(() => {
         (async () => {

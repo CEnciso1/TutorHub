@@ -17,12 +17,16 @@ export default function Login(){
     const handleSubmit = async e => {
         e.preventDefault()
         
+        let userCredentials
         try{
-            await login(email, password)
+            userCredentials = await login(email, password)
+        } catch(error){
+            
+        }
             assignAccountType(accountOption)
-            console.log('signed in')
             if(accountOption === 'student'){
-                const docRef = doc(db, "students", currentUser.uid);
+                
+                const docRef = doc(db, "students", userCredentials.user.uid);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists())
                     navigate('/studentfeed')
@@ -30,16 +34,14 @@ export default function Login(){
                     setCredentialsError('account does not exist')
             }
             else{
-                const docRef = doc(db, "tutors", currentUser.uid);
+                const docRef = doc(db, "tutors", userCredentials.user.uid);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists())
                     navigate('/tutorfeed')
                 else
                     setCredentialsError('account does not exist')
             }
-        } catch(error){
-            
-        }
+
     }
 
     const toggleButton = () => {
