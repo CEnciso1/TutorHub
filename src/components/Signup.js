@@ -6,55 +6,78 @@ import { db } from "../database-config/firebase";
 
 export default function SignUp(){
     let navigate = useNavigate()
-    const {createUser, createUser1, currentUser, assignAccountType} = useAuth()
+    const {createUser, assignAccountType} = useAuth()
     const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
+    const [password1,setPassword1] = useState('')
+    const [password2,setPassword2] = useState('')
     const [firstName,setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [loading, setLoading] = useState(false)
     const [accountOption, setAccountOption] = useState('tutor')
+    const [credentialsError, setCredentialsError] = useState('')
 
     const handleSubmit = async e => {
         e.preventDefault()
+
+        if(password1 !== password2){
+            setCredentialsError('Passwords do not match')
+            return
+        }
+
         assignAccountType(accountOption)
-        const userCredentials = await createUser(email,password)
+        let userCredentials
+        try {
+            userCredentials = await createUser(email,password1)
+        } catch (error) {
+            console.log(error)
+            console.log(error.message)
+            setCredentialsError(error.message)
+            return
+        }
+
+
         if(accountOption === 'student'){
-            await setDoc(doc(db, 'students', userCredentials.user.uid),{
-                email: email,
-                password: password,
-                name: {first:firstName, last:lastName}
-            })
-            console.log('New user')
-            navigate('/studentfeed')
+            try{
+                await setDoc(doc(db, 'students', userCredentials.user.uid),{
+                    email: email,
+                    password: password1,
+                    name: {first:firstName, last:lastName}
+                })
+                console.log('New user')
+                navigate('/studentfeed')
+            }catch(error){
+                console.log(error)
+            }
         }  
         else{
-            await setDoc(doc(db, 'tutors', userCredentials.user.uid),{
-                email: email,
-                password: password,
-                name: {first:firstName, last:lastName}
-            })
-            console.log('New user')
-            navigate('/tutorfeed')
+            try{
+                await setDoc(doc(db, 'tutors', userCredentials.user.uid),{
+                    email: email,
+                    password: password1,
+                    name: {first:firstName, last:lastName}
+                })
+                console.log('New user')
+                navigate('/tutorfeed')
+            }catch(error){
+                console.log(error)
+            }
         }
         
         setLoading(false)
-    }
-
-    const toggleButton = () => {
-        var x = document.getElementById("signUp-form");
-        if (x.style.display === "block") {
-          x.style.display = "none";
-        } else {
-          x.style.display = "block";
-        }
-    }
-
-    
+    }    
 
     return(
 
         <div class='container'>
-            <button type="submit" class="btn btn-primary btn-lg" onClick={toggleButton}>Sign up</button>
+
+            <h1>Sign up</h1>
+
+            {credentialsError && 
+            <div class="alert alert-warning" role="alert">
+                {credentialsError}
+            </div>
+            }
+            
             <div id='signUp-form' class='container-sm'>
                 <form onSubmit={handleSubmit}>
                     <div class="form-group">
@@ -63,7 +86,11 @@ export default function SignUp(){
                     </div>
                     <div class="form-group">
                         <label for="inputPassword1">Password</label>
-                        <input type="password" class="form-control" id="input-password-1" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                        <input type="password" class="form-control" id="input-password-1" placeholder="Password" onChange={(e) => setPassword1(e.target.value)}/>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword2">Confirm password</label>
+                        <input type="password" class="form-control" id="input-password-2" placeholder="Password" onChange={(e) => setPassword2(e.target.value)}/>
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>

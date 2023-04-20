@@ -34,6 +34,7 @@ export function AuthContextProvider ({children}) {
     }
 
     const logout = () => {
+      setAccountType('')
       return signOut(auth)
     }
 

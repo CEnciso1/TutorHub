@@ -3,25 +3,40 @@ import styles from '../css/Login.module.css'
 import Auth from './Auth'
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from 'react-router-dom';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../database-config/firebase";
 
 export default function Login(){
     let navigate = useNavigate()
-    const {login} = useAuth()
+    const {login, assignAccountType, currentUser} = useAuth()
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [accountOption, setAccountOption] = useState('tutor')
-    
+    const [credentialsError, setCredentialsError] = useState('')
 
     const handleSubmit = async e => {
         e.preventDefault()
-
+        
         try{
             await login(email, password)
+            assignAccountType(accountOption)
             console.log('signed in')
-            if(accountOption === 'student')
-                navigate('/studentfeed')
-            else 
-                navigate('/tutorfeed')
+            if(accountOption === 'student'){
+                const docRef = doc(db, "students", currentUser.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists())
+                    navigate('/studentfeed')
+                else
+                    setCredentialsError('account does not exist')
+            }
+            else{
+                const docRef = doc(db, "tutors", currentUser.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists())
+                    navigate('/tutorfeed')
+                else
+                    setCredentialsError('account does not exist')
+            }
         } catch(error){
             
         }
@@ -38,7 +53,15 @@ export default function Login(){
 
     return (
         <div class='container' className={styles.container}>
-            <button type="submit" class="btn btn-primary btn-lg" onClick={toggleButton}>Login with email</button>
+            <h1>Login</h1>
+
+            {credentialsError && 
+            <div class="alert alert-warning" role="alert">
+                {credentialsError}
+            </div>
+            }
+
+            {/* <button type="submit" class="btn btn-primary btn-lg" onClick={toggleButton}>Login with email</button> */}
             <div id='login-form' class='container-sm'>
                 <form onSubmit={handleSubmit}>
                     <div class="form-group">

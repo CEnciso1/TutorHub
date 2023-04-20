@@ -1,7 +1,7 @@
 import '../css/App.css'
-import React, {useState} from "react"
+import React from "react"
 import {BrowserRouter, Route, Routes, } from "react-router-dom"
-import {Navbar, Container, Nav, Button, } from "react-bootstrap"
+import {Navbar, Container, Nav } from "react-bootstrap"
 import {LinkContainer} from "react-router-bootstrap"
 import Login from './Login'
 import StudentFeed from './StudentFeed'
@@ -14,6 +14,7 @@ import ProtectTutorRoute from './ProtectTutorRoute'
 
 function App() {
 
+
   return (
     <div>
       <BrowserRouter>
@@ -25,12 +26,12 @@ function App() {
               <Navbar.Toggle />
               <Navbar.Collapse>
                 <Nav>
-                    <LinkContainer to='/tutorfeed'>
+                    {/* <LinkContainer to='/tutorfeed'>
                       <Nav.Link>Tutor Feed</Nav.Link>
                     </LinkContainer>
                     <LinkContainer to='/studentfeed'>
                       <Nav.Link>Student Feed</Nav.Link>
-                    </LinkContainer>
+                    </LinkContainer> */}
                   <LinkContainer to='/'>
                     <Nav.Link>Login</Nav.Link>
                   </LinkContainer>
@@ -45,10 +46,10 @@ function App() {
             <Routes>
                 <Route element={<PrivateRoute/>}>
                   <Route element={<ProtectStudentRoute/>}>
-                    <Route element={<StudentFeed />} path="/studentfeed" exact />
+                    <Route element={<StudentFeed />} path="/studentfeed" />
                   </Route>
                   <Route element={<ProtectTutorRoute/>}>
-                    <Route element={<TutorFeed />} path="/tutorfeed" exact />
+                    <Route element={<TutorFeed />} path="/tutorfeed" />
                   </Route>
                 </Route>
                 <Route element={<Login />} path="/" exact/>
