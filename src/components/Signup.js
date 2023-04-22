@@ -13,9 +13,9 @@ export default function SignUp(){
     const [firstName,setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [loading, setLoading] = useState(false)
-    const [accountOption, setAccountOption] = useState('tutor')
+    const [accountOption, setAccountOption] = useState('')
     const [credentialsError, setCredentialsError] = useState('')
-
+    
     const handleSubmit = async e => {
         e.preventDefault()
 
@@ -25,6 +25,7 @@ export default function SignUp(){
         }
 
         assignAccountType(accountOption)
+
         let userCredentials
         try {
             userCredentials = await createUser(email,password1)

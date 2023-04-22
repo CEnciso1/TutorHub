@@ -1,34 +1,78 @@
 import React,{ useEffect, useState, Component } from "react"
 import '../css/Styles.css'
+import styles from '../css/StudentFeed.module.css'
 import { useAuth } from "../context/AuthContext"
-import { doc, getDoc } from "firebase/firestore";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import { doc, getDoc, collection, getDocs, updateDoc} from "firebase/firestore";
 import { db } from "../database-config/firebase";
 
 export default function Home(){
     const {currentUser,assignAccountType} = useAuth()
+    const [tutors, setTutors] = useState([])
     const [userData, setUserData] = useState()
-    const [email,setEmail] = useState('')
+    const [email, setEmail] = useState('')
+    const [favTutors, setFavTutors] = useState()
+    const docRef = doc(db, "students", currentUser.uid)
+    const tutorsCollectionRef = collection(db, "tutors")
     assignAccountType('student')
     
     useEffect(() => {
         (async () => {
-            const docRef = doc(db, "students", currentUser.uid)
             try{
+                console.log(docRef)
                 const userDoc = await getDoc(docRef)
                 const data = userDoc.data()
-                setUserData(data)
                 console.log(data)
-                console.log(currentUser.uid)
+                console.log('Favorites')
+                setUserData(data)
+                userData.favorites.map (async (favorite) => {
+                    const favoriteTutorRef = doc(db, 'tutors', favorite)
+                    const favoriteTutorDoc = await getDoc(favoriteTutorRef)
+                    const favoriteData = favoriteTutorDoc.data()
+                    console.log(favoriteData)
+                })
             }catch(error){
                 console.log(error)
             }
         })()
+
+        const getTutors = async () => {
+            const data = await getDocs(tutorsCollectionRef)
+            setTutors(data.docs.map( (doc) => ({...doc.data(), id: doc.id})))
+        }
+        getTutors()
+
         }, []
     )   
+
+    const getDocSync = async(ref) =>{
+        await getDoc(ref)
+    }
+
+    const getDocument = async (id) =>{
+        const favoriteTutorRef = doc(db, 'tutors', id)
+        const favoriteTutorDoc = await getDoc(favoriteTutorRef)
+        const favoriteData = favoriteTutorDoc.data()
+        console.log(favoriteData)
+        return favoriteData
+    }
+
 
 
     const handleSubmit = event => {
         event.preventDefault()
+    }
+
+    const handleAddFavorites = async (event, id) => {
+        event.preventDefault();
+        console.log(id)
+        const newFavoriteData = [`tutors/${id}`]
+        //newFavoriteData[id] = `tutors/${id}`
+        //setDoc(docRef, {favorites: newFavoriteData}, { merge: true })
+        await updateDoc(docRef, {
+            favorites: firebase.firestore.FieldValue.arrayUnion(id)
+        })
     }
 
     return (
@@ -43,10 +87,33 @@ export default function Home(){
                         <br/>
                         <button class="btn btn-primary" type="submit" onClick={handleSubmit}>Submit</button>
                     </form>
+                    <div className={styles.searchResults}>
+                    {tutors.map ( (tutor) => {
+                            return (
+                                <div class='card' className={styles.tutorCard}>
+                                    <h1> {tutor.name.first} </h1>
+                                    <button placeholder='Add to favorites'type='button' class='btn btn-outline-primary btn-sm' onClick={(event) => handleAddFavorites(event, tutor.id)}>add to favorites</button>
+                                </div>
+                                )
+                    })}
+                    </div>
                 </div>
-                <div class='student-content'>
-                    <h1>Your favorite tutors</h1>
-                    <div></div>
+                <div class='student-content' className={styles.studentContent}>
+                    <div class='container' className={styles.favoriteTutors}>
+                        <h1>Your favorite tutors</h1>
+                        {userData && 
+                            userData.favorites.map ( (favorite) =>{
+                                //const //testData = getDocument(favorite)
+                                return(
+                                    <div class='card' className={styles.tutorCard}>
+                                        <h1> {} </h1>
+                                    </div>
+                                )
+                            })
+                            
+                        }
+                            
+                    </div>
 
                 </div>
             </div>
