@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext"
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../database-config/firebase";
 
-export default function Home(){
+export default function TutorFeed(){
     const {currentUser} = useAuth()
     const [userData, setUserData] = useState()
     const [email,setEmail] = useState('')

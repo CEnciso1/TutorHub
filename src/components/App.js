@@ -44,14 +44,16 @@ function App() {
             <Logout/>
           </Navbar>
             <Routes>
-                <Route element={<PrivateRoute/>}>
+                {/* <Route element={<PrivateRoute/>}>
                   <Route element={<ProtectStudentRoute/>}>
                     <Route element={<StudentFeed />} path="/studentfeed" />
                   </Route>
                   <Route element={<ProtectTutorRoute/>}>
                     <Route element={<TutorFeed />} path="/tutorfeed" />
                   </Route>
-                </Route>
+                </Route> */}
+                <Route element={<StudentFeed />} path="/studentfeed" />
+                <Route element={<TutorFeed />} path="/tutorfeed" />
                 <Route element={<Login />} path="/" exact/>
                 <Route element={<SignUp />} path="/signup" />
             </Routes>

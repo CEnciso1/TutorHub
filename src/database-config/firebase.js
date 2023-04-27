@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
 import {getAuth, GoogleAuthProvider} from "firebase/auth"
-import {getFirestore} from 'firebase/firestore'
+import {getFirestore, connectFirestoreEmulator} from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqIqCzuE93JuSz9CQYy9uvzH27H16bub8",
@@ -13,8 +13,14 @@ const firebaseConfig = {
   measurementId: "G-K3CNLBXYTN"
 };
 
+// if(location.hostname === 'localhost'){
+//   firebaseConfig = {
+//     databaseURL: 'http://localhost:9000?ns=tutorhub-3cf08'
+//   }
+// }
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 export const googleProvider = new GoogleAuthProvider()
 export const db = getFirestore(app)
+
