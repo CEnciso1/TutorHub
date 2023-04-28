@@ -12,16 +12,20 @@
 }
 .tutorCard{
     background-color: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: row;
     padding: 10px;
     margin: 10px;
     border-radius: 8px;
     gap: 10px;
 }
 .searchResults{
-    margin-top: 15px;
-    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: row;
+    margin: 1px;
+    background-color: #e47a10dc;
     border-radius: 8px;
     align-items: center;
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
 }

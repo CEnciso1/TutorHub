@@ -55,7 +55,8 @@ export default function SignUp(){
                 await setDoc(doc(db, 'tutors', userCredentials.user.uid),{
                     email: email,
                     password: password1,
-                    name: {first:firstName, last:lastName}
+                    name: {first:firstName, last:lastName},
+                    currAppointments: 0
                 })
                 console.log('New user')
                 navigate('/tutorfeed')

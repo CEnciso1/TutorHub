@@ -1,3 +1,33 @@
 .container{
     margin-top: 20px;
 }
+
+.upcoming-appointments{
+    
+}
+
+.appointment-body{
+    background-color: #e47a10dc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.appointment-card{
+    margin: 5px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.appointment-card h4{
+    font-size: 1.5em;
+    margin: 8px;
+    /* color: red; */
+}
+
+.appointment-card h3{
+    font-size: 90%;
+    margin: 8px;
+}

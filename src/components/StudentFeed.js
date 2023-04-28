@@ -6,6 +6,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { doc, getDoc, collection, getDocs, updateDoc} from "firebase/firestore";
 import { db } from "../database-config/firebase";
+import {Appointment} from "./Appointment.js"
 
 export default function Home(){
     const {currentUser,assignAccountType} = useAuth()
@@ -17,6 +18,7 @@ export default function Home(){
     const tutorsCollectionRef = collection(db, "tutors")
     assignAccountType('student')
     const [update, setUpdate] = useState(false)
+    const [valid, setValid] = useState(false)
     
     useEffect(() => {
         (async () => {
@@ -67,6 +69,20 @@ export default function Home(){
         })
     }
 
+    const handleAppointment = async (event, id) => {
+        event.preventDefault();
+        console.log(id)
+        const newFavoriteData = [`tutors/${id}`]
+        setUpdate(prevValue => !prevValue)
+        await updateDoc(docRef, {
+            favorites: firebase.firestore.FieldValue.arrayUnion(id)
+        })
+    }
+
+    const showAppointment = () =>{
+        setValid(!valid)
+    }
+
     return (
             <div class='container'>
                 <div class='welcome-header'>
@@ -79,16 +95,18 @@ export default function Home(){
                         <br/>
                         <button class="btn btn-primary" type="submit" onClick={handleSubmit}>Submit</button>
                     </form>
-                    <div className={styles.searchResults}>
+                </div>
+                <div className={styles.searchResults}>
                     {tutors.map ( (tutor) => {
                             return (
                                 <div class='card' className={styles.tutorCard}>
                                     <h1> {tutor.name.first} </h1>
                                     <button placeholder='Add to favorites'type='button' class='btn btn-outline-primary btn-sm' onClick={(event) => handleAddFavorites(event, tutor.id)}>add to favorites</button>
+                                    <button onClick={showAppointment} className='book-btn'>book Appointment</button>
+                                    {valid && <Appointment id={tutor.id} currAppointments={tutor.currAppointments}/>}
                                 </div>
                                 )
                     })}
-                    </div>
                 </div>
                 <div class='student-content' className={styles.studentContent}>
                     <div class='container' className={styles.favoriteTutors}>

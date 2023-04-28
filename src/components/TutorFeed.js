@@ -9,7 +9,7 @@ export default function TutorFeed(){
     const [userData, setUserData] = useState()
     const [email,setEmail] = useState('')
     
-    useEffect(() => {
+    const load = useEffect(() => {
         (async () => {
             const docRef = doc(db, "tutors", currentUser.uid)
             try{
@@ -22,8 +22,7 @@ export default function TutorFeed(){
                 console.log(error)
             }
         })()
-        }, []
-    )   
+        }, [])   
 
 
     const handleSubmit = event => {
@@ -43,9 +42,19 @@ export default function TutorFeed(){
                         <button class="btn btn-primary" type="submit" onClick={handleSubmit}>Submit</button>
                     </form>
                 </div>
-                <div class='student-content'>
-                    <h1>Your favorite tutors</h1>
-                    <div></div>
+                <div class='upcoming-appointments'>
+                    <h1>Your Upcoming Appointments</h1>
+                    <div className='appointment-body'>
+                        {userData && userData.currAppointments && (Object.keys(userData.Appointment)).map( (App) => {
+                        return (
+                            <div className='appointment-card'>
+                            <h4>Name: {userData.Appointment[App].name}</h4>
+                            <h3>Date: {userData.Appointment[App].date} </h3>
+                            <h3>Time: {userData.Appointment[App].time}</h3>
+                            </div>
+                        )
+                        })}
+                    </div>
 
                 </div>
             </div>

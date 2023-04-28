@@ -4,14 +4,23 @@ import {getAuth, GoogleAuthProvider} from "firebase/auth"
 import {getFirestore, connectFirestoreEmulator} from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAqIqCzuE93JuSz9CQYy9uvzH27H16bub8",
-  authDomain: "tutorhub-3cf08.firebaseapp.com",
-  projectId: "tutorhub-3cf08",
-  storageBucket: "tutorhub-3cf08.appspot.com",
-  messagingSenderId: "361006099140",
-  appId: "1:361006099140:web:c0440d761e6fd84a02f791",
-  measurementId: "G-K3CNLBXYTN"
+
+  apiKey: "AIzaSyDnPyWhXjCcq8q83uA0mlDKlYxpWOIYMiU",
+
+  authDomain: "csproject2023-777ff.firebaseapp.com",
+
+  projectId: "csproject2023-777ff",
+
+  storageBucket: "csproject2023-777ff.appspot.com",
+
+  messagingSenderId: "344125912039",
+
+  appId: "1:344125912039:web:28c14956c920342f160342",
+
+  measurementId: "G-NSK9R2VKE0"
+
 };
+
 
 // if(location.hostname === 'localhost'){
 //   firebaseConfig = {
