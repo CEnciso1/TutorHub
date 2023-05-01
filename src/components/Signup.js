@@ -83,6 +83,18 @@ export default function SignUp(){
             
             <div id='signUp-form' class='container-sm'>
                 <form onSubmit={handleSubmit}>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="tutorRadio" value='tutor' checked={accountOption === 'tutor'} onChange={(e) => setAccountOption(e.target.value)}/>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Tutor
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="studentRadio" value='student' checked={accountOption === 'student'} onChange={(e) => setAccountOption(e.target.value)}/>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Student 
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <div className="form-group-name">
@@ -102,30 +114,21 @@ export default function SignUp(){
                         <label for="inputPassword2">Confirm password</label>
                         <input type="password" class="form-control" id="input-password-2" placeholder="Password" onChange={(e) => setPassword2(e.target.value)}/>
                     </div>
-                    <div class="form-group">
-                        <label >Area of Experties</label>
-                        <br/>
-                        <sub> (You can enter multiple courses separate by comma) </sub>
-                        <br/>
-                        <input type='text' ></input>
-                    </div>
-                    <div class="form-group">
-                        <label >About Me</label>
-                        <br></br>
-                        <textarea className="about-me" cols="80"> Enter Text here... </textarea>
-                    </div>                    
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="tutorRadio" value='tutor' checked={accountOption === 'tutor'} onChange={(e) => setAccountOption(e.target.value)}/>
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            Tutor
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="studentRadio" value='student' checked={accountOption === 'student'} onChange={(e) => setAccountOption(e.target.value)}/>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                            Student 
-                        </label>
-                    </div>
+                    { accountOption === 'tutor' && <div>
+                        <div class="form-group">
+                            <label >Area of Experties</label>
+                            <br/>
+                            <sub> (You can enter multiple courses separate by comma) </sub>
+                            <br/>
+                            <input type='text' ></input>
+                        </div>
+                        <div class="form-group">
+                            <label >About Me</label>
+                            <br></br>
+                            <textarea className="about-me" cols="80"> Enter Text here... </textarea>
+                        </div>                    
+                    </div>}
+                    <br></br>                    
                     <button type="submit" class="btn btn-primary" disabled={loading}>Submit</button>
                 </form>
             </div>
