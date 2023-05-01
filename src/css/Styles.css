@@ -2,9 +2,15 @@
     margin-top: 20px;
 }
 
-.upcoming-appointments{
-    
+.form-group-name{
+    display: flex;
 }
+
+.about-me{
+    width: 99%;
+    height: 99%;
+}
+
 
 .appointment-body{
     background-color: #e47a10dc;

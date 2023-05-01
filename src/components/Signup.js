@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore"; 
 import { db } from "../database-config/firebase";
+import '../css/Signup.module.css'
 
 export default function SignUp(){
     let navigate = useNavigate()
@@ -83,6 +84,13 @@ export default function SignUp(){
             <div id='signUp-form' class='container-sm'>
                 <form onSubmit={handleSubmit}>
                     <div class="form-group">
+                        <label for="name">Name</label>
+                        <div className="form-group-name">
+                            <input type="text" class="form-control" id="first-name-1" placeholder="First name" onChange={(e) => setFirstName(e.target.value)}/>
+                            <input type="text" class="form-control" id="last-name-1" placeholder="Last name" onChange={(e) => setLastName(e.target.value)}/>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="inputEmail1">Email address</label>
                         <input type="email" class="form-control" id="input-email-1" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)}/>
                     </div>
@@ -95,10 +103,17 @@ export default function SignUp(){
                         <input type="password" class="form-control" id="input-password-2" placeholder="Password" onChange={(e) => setPassword2(e.target.value)}/>
                     </div>
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="first-name-1" placeholder="First name" onChange={(e) => setFirstName(e.target.value)}/>
-                        <input type="text" class="form-control" id="last-name-1" placeholder="Last name" onChange={(e) => setLastName(e.target.value)}/>
+                        <label >Area of Experties</label>
+                        <br/>
+                        <sub> (You can enter multiple courses separate by comma) </sub>
+                        <br/>
+                        <input type='text' ></input>
                     </div>
+                    <div class="form-group">
+                        <label >About Me</label>
+                        <br></br>
+                        <textarea className="about-me" cols="80"> Enter Text here... </textarea>
+                    </div>                    
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="tutorRadio" value='tutor' checked={accountOption === 'tutor'} onChange={(e) => setAccountOption(e.target.value)}/>
                         <label class="form-check-label" for="flexRadioDefault1">
