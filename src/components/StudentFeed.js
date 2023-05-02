@@ -12,6 +12,7 @@ export default function Home(){
     const {currentUser,assignAccountType} = useAuth()
     const [tutors, setTutors] = useState([])
     let userData
+    const [user, setUser] = useState()
     const [email, setEmail] = useState('')
     const [favTutors, setFavTutors] = useState([])
     const docRef = doc(db, "students", currentUser.uid)
@@ -52,9 +53,16 @@ export default function Home(){
             setTutors(data.docs.map( (doc) => ({...doc.data(), id: doc.id})))
         }
         getTutors()
+        getUser()
 
         }, [update]
     ) 
+
+    const getUser = async () => {
+        const userDoc = await getDoc(docRef)
+        const data = userDoc.data()
+        setUser(data)
+    }
 
 
     const handleSubmit = event => {
@@ -102,7 +110,7 @@ export default function Home(){
     return (
             <div class='container'>
                 <div class='welcome-header'>
-                    <h1>Hello {userData && userData.name.first}, welcome to TutorHub</h1>
+                    <h1>Hello {user && user.name.first}, welcome to TutorHub</h1>
                     <p>Search for a tutor that best matches your learning needs</p>
                     <form class='tutor-search-form'action='/' method="POST">
                         <input id='name' class="form-control" placeholder="Name" name='name' type='text' onChange={(e) => setSearchName(e.target.value)}/>
@@ -122,10 +130,26 @@ export default function Home(){
                                     <p>Area of Experties: {tutor.subjects}</p>
                                     <button placeholder='Add to favorites'type='button' class='btn btn-outline-primary btn-sm' onClick={(event) => handleAddFavorites(event, tutor.id)}>add to favorites</button>
                                     <button onClick={showAppointment} className='book-btn'>book Appointment</button>
-                                    {valid && <Appointment id={tutor.id} currAppointments={tutor.currAppointments}/>}
+                                    {valid && <Appointment tutorID={tutor.id} tutorCurrAppointments={tutor.currAppointments} 
+                                    studentID={currentUser.uid} studentCurrAppointments={user.currAppointments} tutorName={tutor.name.first + " " + tutor.name.last}/>}
                                 </div>
                                 )
                     })}
+                </div>
+                <div class='upcoming-appointments'>
+                    <h1>Your Upcoming Appointments</h1>
+                    <div className='appointment-body'>
+                        {user && user.currAppointments && (Object.keys(user.Appointment)).map( (App) => {
+                        return (
+                            <div className='appointment-card'>
+                            <h4>Prof: {user.Appointment[App].name}</h4>
+                            <h3>Date: {user.Appointment[App].date} </h3>
+                            <h3>Time: {user.Appointment[App].time}</h3>
+                            </div>
+                        )
+                        })}
+                    </div>
+
                 </div>
                 <div class='student-content' className={styles.studentContent}>
                     <div class='container' className={styles.favoriteTutors}>

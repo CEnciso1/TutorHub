@@ -4,33 +4,39 @@ import { updateDoc, doc} from 'firebase/firestore'
 import { useState } from "react";
 // import './App.css'
 
-export const Appointment = (id) => {
+export const Appointment = (props) => {
     const {register, handleSubmit} = useForm();
-    const [users, setUsers] = useState([])
 
     const onSubmit = (data) =>{
-        add(id,data)
-        console.log(data, id)
+        add(data)
         // console.log(id)
-        
     }
 
-    const add = async (id,data) =>{
-        let increment = id.currAppointments
-        // console.log(increment)
-        // console.log(id)
-        const str = "Appointment.Appointment"+increment
-        const userDoc = doc(db, "tutors", id.id)
+    const add = async (data) =>{
+        let tutorIncrement = props.tutorCurrAppointments
+        let studentIncrement = props.studentCurrAppointments
+
+        const str = "Appointment.Appointment"+tutorIncrement
+        const studentStr = "Appointment.Appointment"+studentIncrement
+
+        const tutorDoc = doc(db, "tutors", props.tutorID)
+        const studentsDoc = doc(db, "students", props.studentID)
+    
+        console.log(studentIncrement)
         // const newFields = {Appointment :{[str + increment]  : {date: data.date, time:data.time}}}
-        await updateDoc(userDoc, { [str] : {date: data.date, time:data.time, name:data.name}})
-        await updateDoc(userDoc, {currAppointments: increment+1})
+        await updateDoc(tutorDoc, { [str] : {date: data.date, time:data.time, name:data.name}})
+        await updateDoc(tutorDoc, {currAppointments: tutorIncrement+1})
+
+        await updateDoc(studentsDoc, { [studentStr] : {date: data.date, time:data.time, name:props.tutorName}})
+        await updateDoc(studentsDoc, {currAppointments: studentIncrement+1})
+
         window.location.reload(false)
     }
 
     const updateUser = async (id, age) => { 
-    const userDoc = doc(db, "users", id)
+    const tutorDoc = doc(db, "users", id)
     const newFields = {age: age+1}
-    await updateDoc(userDoc, newFields)
+    await updateDoc(tutorDoc, newFields)
   }
 
     return(
@@ -39,6 +45,7 @@ export const Appointment = (id) => {
             <input type="date" {...register("date")}></input>
             <input type="time" {...register("time")}></input>
             <button>Book</button>
+            {console.log(props)}
         </form>
     )
 } 
