@@ -19,6 +19,8 @@ export default function Home(){
     assignAccountType('student')
     const [update, setUpdate] = useState(false)
     const [valid, setValid] = useState(false)
+    const [searchName, setSearchName] = useState(false)
+    const [searchCourse, setSearchCourse] = useState(false)
     
     useEffect(() => {
         (async () => {
@@ -56,6 +58,16 @@ export default function Home(){
 
 
     const handleSubmit = event => {
+        setTutors(tutors.filter( (tutor) => {
+            if(searchName) {
+                return tutor.name.first.toUpperCase().includes(searchName.toUpperCase()) 
+            || tutor.name.last.toUpperCase().includes(searchName.toUpperCase())
+            }
+
+            if(searchCourse){
+                return tutor.subjects.toUpperCase().includes(searchCourse.toUpperCase())
+            }
+        }))
         event.preventDefault()
     }
 
@@ -83,24 +95,31 @@ export default function Home(){
         setValid(!valid)
     }
 
+    // const showSearchResult = (name, course) => {
+        
+    // }
+
     return (
             <div class='container'>
                 <div class='welcome-header'>
                     <h1>Hello {userData && userData.name.first}, welcome to TutorHub</h1>
                     <p>Search for a tutor that best matches your learning needs</p>
                     <form class='tutor-search-form'action='/' method="POST">
-                        <input id='name' class="form-control" placeholder="Name" name='name' type='text' onChange={(e) => setEmail(e.target.value)}/>
+                        <input id='name' class="form-control" placeholder="Name" name='name' type='text' onChange={(e) => setSearchName(e.target.value)}/>
                         <br/>
-                        <input id='major' class="form-control" placeholder="Major" name='major' type='major' onChange={(e) => setEmail(e.target.value)}/>
+                        <input id='major' class="form-control" placeholder="Major" name='major' type='major' onChange={(e) => setSearchCourse(e.target.value)}/>
                         <br/>
                         <button class="btn btn-primary" type="submit" onClick={handleSubmit}>Submit</button>
                     </form>
                 </div>
+                <h1>Your Tutors</h1>
                 <div className={styles.searchResults}>
                     {tutors.map ( (tutor) => {
                             return (
                                 <div class='card' className={styles.tutorCard}>
-                                    <h1> {tutor.name.first} </h1>
+                                    <h1> {tutor.name.first} {tutor.name.last}</h1>
+                                    <p> {tutor.aboutme} </p>
+                                    <p>Area of Experties: {tutor.subjects}</p>
                                     <button placeholder='Add to favorites'type='button' class='btn btn-outline-primary btn-sm' onClick={(event) => handleAddFavorites(event, tutor.id)}>add to favorites</button>
                                     <button onClick={showAppointment} className='book-btn'>book Appointment</button>
                                     {valid && <Appointment id={tutor.id} currAppointments={tutor.currAppointments}/>}

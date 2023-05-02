@@ -13,6 +13,8 @@ export default function SignUp(){
     const [password2,setPassword2] = useState('')
     const [firstName,setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const [subjecList, setSubjecList] = useState('')
+    const [aboutme, setAboutme] = useState('')
     const [loading, setLoading] = useState(false)
     const [accountOption, setAccountOption] = useState('')
     const [credentialsError, setCredentialsError] = useState('')
@@ -43,7 +45,8 @@ export default function SignUp(){
                 await setDoc(doc(db, 'students', userCredentials.user.uid),{
                     email: email,
                     password: password1,
-                    name: {first:firstName, last:lastName}
+                    name: {first:firstName, last:lastName},
+                    currAppointments: 0
                 })
                 console.log('New user')
                 navigate('/studentfeed')
@@ -57,7 +60,9 @@ export default function SignUp(){
                     email: email,
                     password: password1,
                     name: {first:firstName, last:lastName},
-                    currAppointments: 0
+                    currAppointments: 0,
+                    subjects: subjecList,
+                    aboutme: aboutme
                 })
                 console.log('New user')
                 navigate('/tutorfeed')
@@ -116,17 +121,37 @@ export default function SignUp(){
                     </div>
                     { accountOption === 'tutor' && <div>
                         <div class="form-group">
-                            <label >Area of Experties</label>
+                            <label >Subject List</label>
                             <br/>
                             <sub> (You can enter multiple courses separate by comma) </sub>
                             <br/>
-                            <input type='text' ></input>
+                            <input type='text' onChange={ (event) => setSubjecList(event.target.value)} ></input>
                         </div>
                         <div class="form-group">
                             <label >About Me</label>
                             <br></br>
-                            <textarea className="about-me" cols="80"> Enter Text here... </textarea>
-                        </div>                    
+                            <textarea className="about-me" cols="80" placeholder="Enter Text here..." onChange={ (event) => setAboutme(event.target.value)}></textarea>
+                        </div>      
+                        <div className="available-hours">
+                        <label for="available-hours-select">What Days are you available to Teach? &nbsp;&nbsp;</label>
+                            <select name="available-hours-select">
+                                <option>Weekdays</option>
+                                <option>Monday</option>
+                                <option>Tuesday</option>
+                                <option>Wednesday</option>
+                                <option>Thursday</option>
+                                <option>Friday</option>
+                            </select>
+                            <br></br>
+                            <label for="available-hours-select">What hourss are you available to Teach?  From: &nbsp; </label>
+                            <input type="time" />
+                            <label> &nbsp; To : &nbsp; </label>
+                            <input type="time" />
+                        </div>
+                        <div>
+                            <label> Please upload a profile pic &nbsp;&nbsp; </label>
+                            <input type="file"></input>
+                        </div>              
                     </div>}
                     <br></br>                    
                     <button type="submit" class="btn btn-primary" disabled={loading}>Submit</button>
