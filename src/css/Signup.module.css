@@ -4,8 +4,3 @@
     justify-content: space-between;
     align-items: center;
 }
-
-.form-group-name{
-    display: flex;
-    background-color: red;
-}

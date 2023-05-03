@@ -7,8 +7,11 @@
 }
 .favoriteTutors{
     background-color: #e47a10dc;
-    padding: 50px;
+    padding: 20px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
 }
 .tutorCard{
     background-color: rgb(255, 255, 255);
@@ -17,6 +20,15 @@
     border-radius: 8px;
     gap: 10px;
 }
+.favTutorCard{
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+}
 .searchResults{
     display: flex;
     flex-direction: row;
@@ -24,8 +36,17 @@
     background-color: #e47a10dc;
     border-radius: 8px;
     align-items: center;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.upcomingAppointments{
+    margin-bottom: 30px;
 }
 .buttons{
     display: flex;
     flex-direction: row;
+}
+#removeButton{
+    margin-left: auto;
+    margin-right: 10px;
 }

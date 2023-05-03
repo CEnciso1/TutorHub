@@ -14,7 +14,6 @@ import ProtectTutorRoute from './ProtectTutorRoute'
 
 function App() {
 
-
   return (
     <div>
       <BrowserRouter>

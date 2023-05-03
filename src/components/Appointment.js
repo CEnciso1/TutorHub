@@ -44,7 +44,7 @@ export const Appointment = (props) => {
             <input className="name" placeholder="fullname..." type="name" {...register("name")}></input>
             <input type="date" {...register("date")}></input>
             <input type="time" {...register("time")}></input>
-            <button>Book</button>
+            <button class='btn btn-outline-primary btn-sm'>Book</button>
             {console.log(props)}
         </form>
     )

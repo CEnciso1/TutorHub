@@ -1,10 +1,10 @@
-import React,{ useEffect, useState, Component } from "react"
+import React,{ useEffect, useState} from "react"
 import '../css/Styles.css'
 import styles from '../css/StudentFeed.module.css'
 import { useAuth } from "../context/AuthContext"
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import { doc, getDoc, collection, getDocs, updateDoc, deleteField} from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, updateDoc} from "firebase/firestore";
 import { db } from "../database-config/firebase";
 import {Appointment} from "./Appointment.js"
 
@@ -13,7 +13,7 @@ export default function Home(){
     const [tutors, setTutors] = useState([])
     let userData
     //const [userData, setUser] = useState()
-    const [email, setEmail] = useState('')
+    const [user, setUser] = useState()
     const [favTutors, setFavTutors] = useState([])
     const docRef = doc(db, "students", currentUser.uid)
     const tutorsCollectionRef = collection(db, "tutors")
@@ -37,7 +37,9 @@ export default function Home(){
                 userData.favorites.map (async (favorite) => {
                     const favoriteTutorRef = doc(db, 'tutors', favorite)
                     const favoriteTutorDoc = await getDoc(favoriteTutorRef)
+                    console.log("doc_id", favoriteTutorDoc.id)
                     const favoriteData = favoriteTutorDoc.data()
+                    favoriteData.id = favoriteTutorDoc.id
                     console.log('favorites')
                     console.log(favoriteData)
                     setFavTutors(oldFav => [...oldFav, favoriteData])
@@ -53,6 +55,7 @@ export default function Home(){
             setTutors(data.docs.map( (doc) => ({...doc.data(), id: doc.id})))
         }
         getTutors()
+        getUser()
 
         }, [update]
     ) 
@@ -92,6 +95,12 @@ export default function Home(){
         setValid(!valid)
     }
 
+    const getUser = async () => {
+        const userDoc = await getDoc(docRef)
+        const data = userDoc.data()
+        setUser(data)
+    }
+
     return (
             <div class='container'>
                 <div class='welcome-header'>
@@ -113,46 +122,45 @@ export default function Home(){
                                     <h1> {tutor.name.first} {tutor.name.last}</h1>
                                     <p> {tutor.aboutme} </p>
                                     <p>Area of Experties: {tutor.subjects}</p>
-                                    <button placeholder='Add to favorites'type='button' class='btn btn-outline-primary btn-sm' onClick={(event) => handleAddFavorites(event, tutor.id)}>add to favorites</button>
-                                    <button onClick={showAppointment} className='book-btn'>book Appointment</button>
+                                    <button type='button' class='btn btn-outline-primary btn-sm' onClick={(event) => handleAddFavorites(event, tutor.id)}>add to favorites</button>
+                                    <button onClick={showAppointment} type='button' class='btn btn-outline-primary btn-sm'>book Appointment</button>
                                     {valid && <Appointment tutorID={tutor.id} tutorCurrAppointments={tutor.currAppointments} 
-                                    studentID={currentUser.uid} studentCurrAppointments={userData.currAppointments} tutorName={tutor.name.first + " " + tutor.name.last}/>}
+                                    studentID={currentUser.uid} studentCurrAppointments={user.currAppointments} tutorName={tutor.name.first + " " + tutor.name.last}/>}
                                 </div>
                                 )
                     })}
                 </div>
-                <div class='upcoming-appointments'>
+                <br></br>
+                <div className={styles.upcomingAppointments}>
                     <h1>Your Upcoming Appointments</h1>
-                    <div className='appointment-body'>
-                        {userData && userData.currAppointments && (Object.keys(userData.Appointment)).map( (App) => {
+                    <div className='appointment-body' >
+                        {user && user.currAppointments && (Object.keys(user.Appointment)).map( (App) => {
                         return (
                             <div className='appointment-card'>
-                            <h4>Prof: {userData.Appointment[App].name}</h4>
-                            <h3>Date: {userData.Appointment[App].date} </h3>
-                            <h3>Time: {userData.Appointment[App].time}</h3>
+                            <h4>Prof: {user.Appointment[App].name}</h4>
+                            <h3>Date: {user.Appointment[App].date} </h3>
+                            <h3>Time: {user.Appointment[App].time}</h3>
                             </div>
                         )
                         })}
                     </div>
                 </div>
-                <div class='student-content' className={styles.studentContent}>
+                <br></br>
+                <h1>Your favorite tutors</h1>
                     <div class='container' className={styles.favoriteTutors}>
-                        <h1>Your favorite tutors</h1>
                         {favTutors &&
                             favTutors.map ( (favorite) =>{
                                 return(
-                                    <div class='card' className={styles.tutorCard}>
+                                    <div class='card' className={styles.favTutorCard}>
                                         <h1> {favorite.name.first} </h1>
-                                        <h1> {favorite.email} </h1>
-                                        <button type='button' class='btn btn-primary' onClick={event => handleDeleteFavorites(event, favorite.id)}>Remove from favorites</button>
+                                        <h1> Subjects: {favorite.subjects} </h1>
+                                        <button type='button' id={styles.removeButton} class='btn btn-outline-primary btn-sm' onClick={event => handleDeleteFavorites(event, favorite.id)}>Remove from favorites</button>
                                     </div>
                                 )
                             })
                         }
                             
                     </div>
-
                 </div>
-            </div>
         )
 }

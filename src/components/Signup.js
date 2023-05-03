@@ -1,4 +1,5 @@
 import React,{ useState } from "react"
+import styles from '../css/Login.module.css'
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from "firebase/firestore"; 
@@ -76,7 +77,7 @@ export default function SignUp(){
 
     return(
 
-        <div class='container'>
+        <div class='container' className={styles.container}>
 
             <h1>Sign up</h1>
 
@@ -85,8 +86,8 @@ export default function SignUp(){
                 {credentialsError}
             </div>
             }
-            
             <div id='signUp-form' class='container-sm'>
+                <h4>Account Type</h4>
                 <form onSubmit={handleSubmit}>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="tutorRadio" value='tutor' checked={accountOption === 'tutor'} onChange={(e) => setAccountOption(e.target.value)}/>
